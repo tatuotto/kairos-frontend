@@ -110,6 +110,18 @@
                     sendMessage();
                 }
             });
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    // Usamos la ruta completa porque GitHub Pages aloja el repo en un subdirectorio.
+                    navigator.serviceWorker.register('/kairos-frontend/serviceworker.js')
+                        .then(registration => {
+                            console.log('Service Worker registrado. ¡Ahora sí somos una app de verdad!');
+                        })
+                        .catch(err => {
+                            console.log('Falló el registro del Service Worker, la puta madre:', err);
+                        });
+                });
+            }
             
             document.addEventListener('DOMContentLoaded', setupContextButton);
             userInput.focus();
