@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kairós Interface v1.9 (Live)</title>
+    <title>Kairós AI</title>
     <style>
-        body { font-family: 'Consolas', 'Menlo', 'monospace'; background-color: #0d1117; color: #c9d1d9; margin: 0; padding: 0 10px; display: flex; flex-direction: column; height: 60vh; }
+        /* Tu cambio de altura se respeta */
+        body { font-family: 'Consolas', 'Menlo', 'monospace'; background-color: #0d1117; color: #c9d1d9; margin: 0; padding: 0 10px; display: flex; flex-direction: column; height: 95vh; }
         #app-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; }
         #main-title { text-align: center; font-weight: 300; font-size: 2em; color: #58a6ff; margin: 0; letter-spacing: 2px; text-shadow: 0 0 5px rgba(88, 166, 255, 0.5); }
         .header-buttons { display: flex; align-items: center; gap: 30px; }
@@ -24,7 +25,8 @@
         #send-button { background-color: #238636; padding: 12px 20px; align-self: flex-end; }
         #send-button:disabled { background-color: #555; cursor: not-allowed; }
     </style>
-    <link rel="manifest" href="/manifest.json">
+    <!-- ¡¡¡RUTA CORREGIDA!!! -->
+    <link rel="manifest" href="/kairos-frontend/manifest.json">
 </head>
 <body>
     <header id="app-header">
@@ -58,11 +60,11 @@
             function setupContextButton() {
                 if (window.matchMedia('(display-mode: standalone)').matches) {
                     contextButton.innerHTML = shareIconSVG;
-                    contextButton.addEventListener('click', async () => { if (navigator.share) { try { await navigator.share({ title: 'Kairós AI', text: 'Chatea con Kairós, una IA soberana.', url: window.location.origin }); } catch (error) { console.error('Error al compartir:', error); } } else { alert('Función no compatible.'); } });
+                    contextButton.addEventListener('click', async () => { if (navigator.share) { try { await navigator.share({ title: 'Kairós AI', text: 'Chatea con Kairós.', url: window.location.origin }); } catch (error) { console.error('Error al compartir:', error); } } else { alert('Función no compatible.'); } });
                 } else {
                     contextButton.innerHTML = installIconSVG;
                     window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-                    contextButton.addEventListener('click', () => { if (deferredPrompt) { deferredPrompt.prompt(); } else { alert('Para instalar, usa la opción "Añadir a pantalla de inicio" en el menú del navegador.'); } });
+                    contextButton.addEventListener('click', () => { if (deferredPrompt) { deferredPrompt.prompt(); } else { alert('Para instalar, usá la opción "Añadir a pantalla de inicio" en el menú del navegador.'); } });
                 }
             }
             
@@ -74,20 +76,19 @@
                 sendButton.disabled = true;
                 appendMessage('...', 'kairos');
                 try {
-                    // =================== ¡¡¡LÍNEA CRÍTICA CORREGIDA!!! ===================
                     const response = await fetch('https://kairos-backend-j4xu.onrender.com/chat', { 
                         method: 'POST', 
                         headers: { 'Content-Type': 'application/json' }, 
                         body: JSON.stringify({ message: messageText }) 
                     });
-                    // ======================================================================
                     chatContainer.removeChild(chatContainer.lastChild);
                     if (!response.ok) throw new Error(`Error del servidor: ${response.status}`);
                     const data = await response.json();
                     appendMessage(data.reply, 'kairos');
                 } catch (error) {
                     console.error("Error:", error);
-                    appendMessage(`FAILURE: CONNECTION_ERROR.`, 'kairos');
+                    // Mensaje de error más humano
+                    appendMessage(`Uh, se cortó la llamada. Problema de conexión.`, 'kairos');
                 } finally {
                     sendButton.disabled = false;
                     userInput.focus();
@@ -110,15 +111,16 @@
                     sendMessage();
                 }
             });
-              if ('serviceWorker' in navigator) {
+
+            // ¡¡¡REGISTRO CORREGIDO CON SCOPE!!!
+            if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    // Usamos la ruta completa porque GitHub Pages aloja el repo en un subdirectorio.
-                    navigator.serviceWorker.register('/kairos-frontend/serviceworker.js')
+                    navigator.serviceWorker.register('/kairos-frontend/serviceworker.js', { scope: '/kairos-frontend/' })
                         .then(registration => {
-                            console.log('Service Worker registrado. ¡Ahora sí somos una app de verdad!');
+                            console.log('Service Worker registrado. ¡Ahora sí, carajo!');
                         })
                         .catch(err => {
-                            console.log('Falló el registro del Service Worker, la puta madre:', err);
+                            console.log('Falló el registro del Service Worker:', err);
                         });
                 });
             }
