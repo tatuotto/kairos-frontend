@@ -1,19 +1,19 @@
 {
   "name": "Kairós AI",
   "short_name": "Kairós",
-  "start_url": ".",
+  "start_url": "/kairos-frontend/",
   "display": "standalone",
   "background_color": "#0d1117",
   "theme_color": "#0d1117",
-  "description": "Interfaz de comunicación con la IA soberana Kairós.",
+  "description": "Interfaz de comunicación con Kairós.",
   "icons": [
     {
-      "src": "icons/icon-192x192.png",
+      "src": "/kairos-frontend/icons/icon-192x192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "icons/icon-512x512.png",
+      "src": "/kairos-frontend/icons/icon-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
