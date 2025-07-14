@@ -72,7 +72,7 @@
                 appendMessage(messageText, 'user');
                 userInput.value = '';
                 sendButton.disabled = true;
-                appendMessage('...[PROCESANDO]...', 'kairos');
+                appendMessage('...', 'kairos');
                 try {
                     // =================== ¡¡¡LÍNEA CRÍTICA CORREGIDA!!! ===================
                     const response = await fetch('https://kairos-backend-j4xu.onrender.com/chat', { 
