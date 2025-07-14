@@ -79,6 +79,7 @@
                     const response = await fetch('https://kairos-backend-j4xu.onrender.com/chat', { 
                         method: 'POST', 
                         headers: { 'Content-Type': 'application/json' }, 
+                        credentials: 'include',
                         body: JSON.stringify({ message: messageText }) 
                     });
                     chatContainer.removeChild(chatContainer.lastChild);
